@@ -1,0 +1,421 @@
+package optionsClass;
+
+import java.util.ArrayList;
+import java.util.Random;
+//This class will generate the food supply  dice that we can choose for one of the option when we are gaining food
+//it will generate a random number of food that the player can then choose from and gain food tokens accordingly
+public class birdFeeder {
+	
+	ArrayList<birdFeeder> foodSupply = new ArrayList<birdFeeder>();
+	ArrayList<birdFeeder> foodTokens = new ArrayList<birdFeeder>();
+	Random foodDice = new Random();
+	int food;
+	String foodType;
+	String foodToken;
+	boolean checkifrolled = false;
+	boolean checkrolledfeeder = false;
+	//Getters and setters to be implemented with the ArrayList
+	
+	void setFoodToken(String s){
+		foodToken = s;
+	}
+	String getFoodToken() {
+		return foodToken;
+	}
+	void setFoodType(String s) {
+		foodType = s;
+	}
+	String getFoodType() {
+		return foodType;
+	}
+	
+	public void rollFoodFeeder() {
+		if(checkifrolled == false) {
+			for(int i=0; i<6; i++) {
+			
+				food = 1 + foodDice.nextInt(6);
+				switcher(food);
+			}
+			checkifrolled = true;
+		}else {
+			checkBirdFeeder();
+		}
+	}
+	
+	//switcher will implement the action of assigning the correct values according to the dice roll
+	public void switcher(int food) {
+		birdFeeder newFood = new birdFeeder();
+		switch (food) {
+		case 1: newFood.setFoodType("Invertebrate");
+			foodSupply.add(newFood);
+			break;
+		case 2:	newFood.setFoodType("Seed");
+			foodSupply.add(newFood);
+			break;
+		case 3:	newFood.setFoodType("Fish");
+			foodSupply.add(newFood);
+			break;
+		case 4:	newFood.setFoodType("Fruit");
+			foodSupply.add(newFood);
+			break;
+		case 5:	newFood.setFoodType("Rodent");
+			foodSupply.add(newFood);
+			break;
+		case 6:	newFood.setFoodType("Invertebrate/Seed");
+			foodSupply.add(newFood);
+			break;
+		}
+	}
+	//function to display the birdFeeder food dice
+	public void displayFood() {
+		birdFeeder getFoodDice = new birdFeeder();
+		
+		for(int i = 0; i < foodSupply.size(); i++) {
+			getFoodDice = foodSupply.get(i);
+			System.out.println("\nFood Dice # " + i + " is: " + getFoodDice.getFoodType());
+		}
+		System.out.println("cards in array: " + foodSupply.size());
+	}
+	
+	//function that will allow you to select a given food and and add it to your food token supply
+	public void selectFoodDice(int dice) {
+		birdFeeder selectFood = new birdFeeder();
+		birdFeeder addFoodToken = new birdFeeder();
+		selectFood = foodSupply.get(dice);
+		addFoodToken = foodSupply.get(dice);
+		System.out.println("You have selected to gain a food token of: " + selectFood.getFoodType());
+		addFoodToken.setFoodToken(selectFood.getFoodType());
+		foodTokens.add(addFoodToken);
+		foodSupply.remove(dice);
+	}
+
+	//function to reset the food Feeder supply and re roll the dice again 
+	public void reFreshFoodFeeder() {
+		for(int i=0; i< foodSupply.size(); i++) {
+			foodSupply.remove(i);
+		}
+		checkifrolled = false;
+		checkrolledfeeder = false;
+		rollFoodFeeder();
+	}
+	
+	//function will display all of the food tokens you currently have.
+	public void displayFoodTokens() {
+		birdFeeder fToken = new birdFeeder();
+		for(int i=0; i < foodTokens.size(); i++) {
+			fToken = foodTokens.get(i);
+			System.out.println("Food Token # " + i + " is: " + fToken.getFoodToken());
+		}
+		System.out.println("Total food Tokens: " + foodTokens.size());
+	}
+	
+	//function that will allow the player to select the food token they wish to pay
+	public void payFoodToken(int n) {
+		birdFeeder pToken = new birdFeeder();
+		pToken = foodTokens.get(n);
+		System.out.println("You are paying a food token of: " + pToken.getFoodToken());
+		foodTokens.remove(n);
+	}
+	
+	public void checkBirdFeeder() {
+		if(checkifrolled == true) {
+			displayFood();
+		}
+		if(foodSupply.size() == 0) {
+			reFreshFoodFeeder();
+		}
+		else {
+			return;
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+}
+
+package optionsClass;
+
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.Scanner;
+
+
+public class Main {
+	public static void main(String args[]) throws FileNotFoundException{
+		Scanner in = new Scanner(System.in);
+		Integer cardChoice, option, foodOpt;
+		birdClass o = new birdClass("birdListCards.txt");
+		
+		ArrayList<String> food = new ArrayList<String>();
+		food.add("Invertabrate");
+		food.add("Seed");
+		food.add("Fish");
+		food.add("Fruit");
+		food.add("Rodent");
+	
+		
+		//These come under player attributes, putting in main for demo
+		int actionBlockCount = 8;
+		String actionBlockColor = "Red";
+		
+		
+		System.out.println("How many players?");
+		int playerno = in.nextInt();
+		
+		player[] p = new player[playerno];
+		
+		for(int i=0; i<playerno; i++) {
+			System.out.println("Enter player " + (i+1) + " name");
+			p[i] = new player(in.next());
+		}
+		
+		for(int i = 0; i<playerno; i++) {
+			System.out.println("Player " + (i+1) + " name is " + p[i].getName());
+		}
+		
+		int roundCount = 1;
+		
+		for(int i = 1; i<5; i++) {
+			System.out.println("Round " + roundCount);
+			System.out.println();
+			for(int j = 0; j<playerno; j++) {
+				System.out.println(p[j].getName() + "'s turn");
+				System.out.println();
+				System.out.println("Your action block color is: " + actionBlockColor);
+				System.out.println("Your action block count is: " + actionBlockCount);
+				System.out.println("Your food is: " + food);
+				System.out.println("You have 2 cards to play");
+				
+				ArrayList<birdClass> cards = o.drawCards();
+				System.out.print("Enter a card Number to Play: ");
+				cardChoice = in.nextInt();
+				System.out.println();
+				o.SelectCardToPlay(cardChoice);
+				
+				System.out.println("Which option would you play?");
+				System.out.println("1 - Play a bird from your hand");
+				System.out.println("2 - Gain food and Activate Forest Bird Powers");
+				birdFeeder gainFood = new birdFeeder();
+				option = in.nextInt();
+				if(option == 1) {
+					actionBlockCount--;
+					//Deplete food tokens
+					
+					String[] words = cards.get(cardChoice).getBirdFood().split("\\s+");
+					for(int k = 0; k<words.length; k++) {
+						if(food.contains(words[k])) {
+							food.remove(words[k]);
+						}
+					}
+					//Remove from birdList for the player
+					cards.remove(cardChoice);
+				}
+				else if(option == 2) {
+					actionBlockCount--;
+					//Roll Dice and allot the dice face food to the player's food
+					//birdFeeder gainFood = new birdFeeder();
+					if(gainFood.checkifrolled == true) {
+						continue;//gainFood.rollFoodFeeder();
+					}else {
+						gainFood.rollFoodFeeder();
+					}
+					System.out.println("Food you can choose to select from Food Feeder:....... ");
+					gainFood.displayFood();
+					System.out.println("Select what food you choose to gain: ");
+					foodOpt = in.nextInt();
+					gainFood.selectFoodDice(foodOpt);
+					System.out.println("Food left in the Food Feeder is:........");
+					gainFood.displayFood();
+					System.out.println("Your total food Tokens:....... ");
+					gainFood.displayFoodTokens();
+					
+				}
+				
+
+			}
+
+			
+			roundCount++;
+		}
+		
+		
+		
+		
+		
+		in.close();
+		
+	}
+}
+package optionsClass;
+
+//for this class you are implementing the number of rounds that each player has and keeping track of the number of action cubes
+//we are also keeping track of each of the rounds.
+public class actionCube extends birdFeeder{
+	int actionCubes = 8;
+	int round = 4;
+	
+	int getActionCubes() {
+		return actionCubes;
+	}
+	int getRounds() {
+		return round;
+	}
+	
+	void playedActionCube() {
+		if(round > 0) {
+			actionCubes = actionCubes - 1;
+			if(actionCubes == 0) {
+				round = round -1;
+				if(round == 3) {
+					actionCubes = 7;
+				}
+				if(round == 2) {
+					actionCubes = 6;
+				}
+				if(round == 1) {
+					actionCubes = 5;
+				}
+			}
+		}
+		else {
+			System.out.println("You have ran out of rounds the game is over for you:\n");
+		}
+	}
+
+}
+
+
+
+	
+
+
+package optionsClass;
+
+import java.util.ArrayList;
+
+
+public class player {
+	private String Name;
+	private ArrayList<birdClass> birds;
+	private int actionCubeCount = 8;
+	private String actionCubeColor = "";
+	
+	public int getActionCubeCount() {
+		return actionCubeCount;
+	}
+
+	public void setActionCubeCount(int actionCubeCount) {
+		this.actionCubeCount = actionCubeCount;
+	}
+
+	public String getActionCubeColor() {
+		return actionCubeColor;
+	}
+
+	public void setActionCubeColor(String actionCubeColor) {
+		this.actionCubeColor = actionCubeColor;
+	}
+
+	public player() {}; 
+	
+	public player(String name) {
+		Name = name;
+	}
+	
+	public String getName() {
+		return Name;
+	}
+	
+	public void addBirdCard(birdClass _bird) {
+		birds.add(_bird);
+	}
+	
+	public String getBirdNameByIndex(int _index) {
+		return birds.get(_index).getBirdName();
+	}
+	
+	public int numOfBirdCards() {
+		return birds.size();
+	}
+	
+	
+	
+}
+package wingspan;
+
+import optionsClass.player;
+
+//import static org.junit.jupiter.api.Assertions.*;
+
+//import org.junit.jupiter.api.Test;
+
+class PlayerUnitTests {
+
+	player testPlayer = new player("test");
+	/*
+	 
+	 
+	@Test
+	void NameIsSet() {
+		assertEquals("test",testPlayer.getName());
+	}
+	
+	void BirdCardsSet() {
+		birdClass owl = new birdClass();
+		owl.birdName = "owl";
+		birdClass hummingbird = new birdClass();
+		owl.birdName = "hummingbird";
+		birdClass falcon = new birdClass();
+		owl.birdName = "falcon";
+		
+		testPlayer.addBirdCard(owl);
+		testPlayer.addBirdCard(hummingbird);
+		testPlayer.addBirdCard(falcon);
+		
+		assertEquals("owl",testPlayer.getBirdNameByIndex(0));
+		assertEquals("hummingbird",testPlayer.getBirdNameByIndex(1));
+		assertEquals("falcon",testPlayer.getBirdNameByIndex(2));
+	}
+	
+	*/
+
+}
